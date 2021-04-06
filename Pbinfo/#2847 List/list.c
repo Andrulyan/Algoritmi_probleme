@@ -24,6 +24,24 @@ void afisare(struct node *head)
         temp = temp->next;
     }
 }
+struct node *create_node(int a, int b)
+{
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->a = a;
+    new_node->b = b;
+    new_node->next = NULL;
+    return new_node;
+}
+struct node *assign_node(int a, int b)
+{
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->a = a;
+    new_node->b = b;
+    new_node->next = NULL;
+    return new_node;
+}
 int main()
 {
     FILE *f = fopen("list.in", "r");
@@ -36,7 +54,7 @@ int main()
     else
     {
         int n, a, b, i = 0;
-        struct node *head, *current;
+        struct node *head, *current, *new_node, *add_node;
         head = NULL;
         head = initializare(head); ///initialize the head of list
         if (fscanf(f, "%d", &n) == 1)
@@ -45,12 +63,7 @@ int main()
             {
                 if (fscanf(f, "%d %d", &a, &b) == 2)
                 {
-                    struct node *new_node;
-                    new_node = (struct node *)malloc(sizeof(struct node));
-                    new_node->a = a;
-                    new_node->b = b;
-                    new_node->next = NULL;
-
+                    new_node = create_node(a, b);
                     if (head == NULL)
                     {
                         new_node->next = NULL;
@@ -59,12 +72,7 @@ int main()
 
                     if (a % 2 == 0 && b % 2 != 0)
                     {
-                        struct node *add_node;
-                        add_node = (struct node *)malloc(sizeof(struct node));
-                        add_node->a = (new_node->a + new_node->b) * 2;
-                        add_node->b = add_node->a - new_node->b;
-                        add_node->next = NULL;
-
+                        add_node = assign_node((new_node->a + new_node->b) * 2,(new_node->a + new_node->b) * 2 - new_node->b);
                         current = head;
 
                         while (current->next != NULL)
@@ -77,11 +85,8 @@ int main()
                     }
                     else if (a % 2 != 0 && b % 2 == 0)
                     {
-                        struct node *add_node;
-                        add_node = (struct node *)malloc(sizeof(struct node));
-                        add_node->a = (new_node->a + new_node->b) * 2 - new_node->a;
-                        add_node->b = (new_node->a + new_node->b) * 2;
 
+                        add_node = assign_node((new_node->a + new_node->b) * 2 - new_node->a, (new_node->a + new_node->b) * 2);
                         if (head->next == NULL) //if we have just one node we have to move the head to add_node
                         {
                             add_node->next = head;
@@ -102,12 +107,8 @@ int main()
                     }
                     else if (a % 2 == 0 && b % 2 == 0)
                     {
-                        struct node *add_node;
-                        add_node = (struct node *)malloc(sizeof(struct node));
-                        add_node->a = (new_node->a + new_node->b) / 2;
-                        add_node->b = add_node->a + new_node->b;
-                        add_node->next = NULL;
 
+                        add_node = assign_node((new_node->a + new_node->b) / 2, (new_node->a + new_node->b) / 2 + new_node->b);
                         current = head;
 
                         while (current->next != NULL)
@@ -120,12 +121,8 @@ int main()
                     }
                     else if (a % 2 != 0 && b % 2 != 0)
                     {
-                        struct node *add_node;
-                        add_node = (struct node *)malloc(sizeof(struct node));
-                        add_node->a = (new_node->a + new_node->b) / 2 + new_node->a;
-                        add_node->b = (new_node->a + new_node->b) / 2;
 
-                        // add_node->next = NULL;
+                        add_node = assign_node((new_node->a + new_node->b) / 2 + new_node->a, (new_node->a + new_node->b) / 2);
                         if (head->next == NULL) //if we have just one node we have to move the head to add_node
                         {
                             add_node->next = head;
